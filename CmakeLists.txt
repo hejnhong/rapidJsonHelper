@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(MySerializer)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include_directories(include rapidjson/include)
+
+add_executable(test 
+    main.cpp
+)
+
+# 包含头文件目录
+target_include_directories(test PRIVATE .)    
