@@ -2,14 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MySerializer)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(include rapidjson/include)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(third_party/rapidjson/include)
+
+add_subdirectory(DataSerializer)
 
 add_executable(test 
-    main.cpp
+    test/main.cpp
+    test/MyClass.cpp
 )
 
-# 包含头文件目录
-target_include_directories(test PRIVATE .)    
+target_link_libraries(test data_serializer)
