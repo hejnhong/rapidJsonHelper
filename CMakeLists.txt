@@ -9,6 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(third_party/rapidjson/include)
 
 add_library(data_serializer OBJECT src/DataSerializer.cpp)
+target_include_directories(data_serializer PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(test 
     test/main.cpp
