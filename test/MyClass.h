@@ -10,6 +10,6 @@ public:
 
     void fromJson(DataSerializer *serializer) override;
     void toJson(DataSerializer *serializer) override;
-}
+};
 
 #endif // MY_CLASS_H
