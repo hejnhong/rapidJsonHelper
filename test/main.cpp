@@ -4,6 +4,6 @@
 int main() {
     DataSerializer serializer;
     MyClass myClass;
-    myClass.toJson(&serializer);
+    serializer.serialize(&myClass);
     return 0;
 }

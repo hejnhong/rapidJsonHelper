@@ -17,6 +17,13 @@ public:
 
     template <typename T>
     void writeItem(std::string key, T value);
+private:
+    void reset();
+
+    rapidjson::Document doc;
+    rapidjson::StringBuffer buf;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer;
+    rapidjson::Value *curNode = nullptr;
 };
 
 template <typename T>
