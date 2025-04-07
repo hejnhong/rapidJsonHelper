@@ -1,7 +1,8 @@
 #ifndef SERIALIZE_UTIL_H
 #define SERIALIZE_UTIL_H
 
-#include "JsonSeriaLizable.h"
+// #include "JsonSeriaLizable.h"
+class JsonSeriaLizable;
 
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
@@ -41,10 +42,15 @@ void SerializeUtil::writeItem(std::string key, T value) {
     } else if constexpr (std::is_enum_v<T>) {
         writer->Int(static_cast<int>(value));
     } else if constexpr (std::is_pointer_v<std::decay_t<T>>) {
-        if (std::is_base_of_v<JsonSeriaLizable, std::remove_pointer_t<std::decay_t<T>>>) {
+        using RawType = std::remove_pointer_t<std::decay_t<T>>;
+        if constexpr (std::is_base_of_v<JsonSeriaLizable, RawType>) {
             writer->StartObject();
-            value->toJson(this);
+            if (value) {
+                value->toJson(this);
+            }
             writer->EndObject();
+        } else {
+            std::cout << "Not a JsonSeriaLizable pointer." << std::endl;
         }
     }
 }
