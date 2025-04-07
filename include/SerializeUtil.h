@@ -41,6 +41,10 @@ void SerializeUtil::writeItem(std::string key, T value) {
         writer->String(value);
     } else if constexpr (std::is_enum_v<T>) {
         writer->Int(static_cast<int>(value));
+    }else if constexpr (std::is_same_v<std::decay_t<T>, const char*>) {
+        if (value) {
+            writer->String(value);
+        }
     } else if constexpr (std::is_pointer_v<std::decay_t<T>>) {
         using RawType = std::remove_pointer_t<std::decay_t<T>>;
         if constexpr (std::is_base_of_v<JsonSeriaLizable, RawType>) {
