@@ -1,12 +1,12 @@
 #ifndef JSON_SERIALIZABLE_H
 #define JSON_SERIALIZABLE_H
 
-#include "DataSerializer.h"
+#include "SerializeUtil.h"
 
 class JsonSeriaLizable {
 public:
-    void virtual toJson(DataSerializer *serializer) = 0;
-    void virtual fromJson(DataSerializer *serializer) = 0;
+    void virtual toJson(SerializeUtil *serializeUtil) = 0;
+    void virtual fromJson(SerializeUtil *serializeUtil) = 0;
 
     ~JsonSeriaLizable() {}
 };

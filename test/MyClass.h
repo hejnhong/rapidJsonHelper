@@ -8,8 +8,8 @@ class MyClass : public JsonSeriaLizable
 public:
     MyClass();
 
-    void fromJson(DataSerializer *serializer) override;
-    void toJson(DataSerializer *serializer) override;
+    void fromJson(SerializeUtil *serializeUtil) override;
+    void toJson(SerializeUtil *serializeUtil) override;
 };
 
 #endif // MY_CLASS_H

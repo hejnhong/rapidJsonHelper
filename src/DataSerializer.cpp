@@ -1,13 +1,17 @@
-#include "DataSerializer.h"
-#include "JsonSeriaLizable.h"
+# include "DataSerializer.h"
 
-std::string DataSerializer::serialize(JsonSeriaLizable *obj) {
-    obj->toJson(this);
+void DataSerializer::serialize(JsonSeriaLizable *obj) {
+    buf.Clear();
+    doc.Clear();
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer;
+    writer.Reset(buf);
+    rapidjson::Value rootNode;
+
+    SerializeUtil serializeUtil;
+    serializeUtil.init(writer, rootNode);
+    obj->toJson(&serializeUtil);
 }
 
-void DataSerializer::reset() {
-    buf.Clear();
-    writer.Reset(buf);
-    doc.Clear();
-    curNode = nullptr;
+void DataSerializer::deserialize(JsonSeriaLizable *obj) {
+
 }

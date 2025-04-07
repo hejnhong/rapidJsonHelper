@@ -1,34 +1,21 @@
 #ifndef DATA_SERIALIZER_H
 #define DATA_SERIALIZER_H
 
+#include "JsonSeriaLizable.h"
+
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
-#include <iostream>
-#include <string>
-#include <type_traits>
-
-class JsonSeriaLizable;
-
-class DataSerializer {
+class DataSerializer
+{
 public:
-    std::string serialize(JsonSeriaLizable *obj);
+    void serialize(JsonSeriaLizable *obj);
+    void deserialize(JsonSeriaLizable *obj);
 
-    template <typename T>
-    void writeItem(std::string key, T value);
 private:
-    void reset();
-
     rapidjson::Document doc;
     rapidjson::StringBuffer buf;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer;
-    rapidjson::Value *curNode = nullptr;
 };
 
-template <typename T>
-void DataSerializer::writeItem(std::string key, T value) {
-    std::cout << key << ": " << value << std::endl;
-}
-
-#endif // DATA_SERIALIZER_H
+#endif

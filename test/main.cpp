@@ -2,8 +2,8 @@
 
 #include <iostream>
 int main() {
-    DataSerializer serializer;
+    SerializeUtil serializeUtil;
     MyClass myClass;
-    serializer.serialize(&myClass);
+    myClass.toJson(&serializeUtil);
     return 0;
 }

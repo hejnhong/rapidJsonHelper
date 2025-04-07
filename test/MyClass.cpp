@@ -4,10 +4,10 @@ MyClass::MyClass() {
 
 }
 
-void MyClass::fromJson(DataSerializer *serializer) {
+void MyClass::fromJson(SerializeUtil *serializeUtil) {
     
 }
 
-void MyClass::toJson(DataSerializer *serializer) {
+void MyClass::toJson(SerializeUtil *serializeUtil) {
     serializer->writeItem("name", "zhangsan");
 }
