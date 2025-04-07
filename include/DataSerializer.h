@@ -10,7 +10,7 @@
 class DataSerializer
 {
 public:
-    void serialize(JsonSeriaLizable *obj);
+    std::string serialize(JsonSeriaLizable *obj);
     void deserialize(JsonSeriaLizable *obj);
 
 private:

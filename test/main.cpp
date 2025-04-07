@@ -1,12 +1,12 @@
 #include "MyClass.h"
 #include "DataSerializer.h"
 
+#include <string>
 #include <iostream>
 int main() {
-    // SerializeUtil serializeUtil;
     MyClass myClass;
-    // myClass.toJson(&serializeUtil);
     DataSerializer dataSerializer;
-    dataSerializer.serialize(&myClass);
+    std::string res = dataSerializer.serialize(&myClass);
+    std::cout << res << std::endl;
     return 0;
 }
