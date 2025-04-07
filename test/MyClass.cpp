@@ -9,5 +9,5 @@ void MyClass::fromJson(SerializeUtil *serializeUtil) {
 }
 
 void MyClass::toJson(SerializeUtil *serializeUtil) {
-    serializer->writeItem("name", "zhangsan");
+    serializeUtil->writeItem("name", "zhangsan");
 }
