@@ -2,7 +2,6 @@
 
 void DataSerializer::serialize(JsonSeriaLizable *obj) {
     buf.Clear();
-    doc.Clear();
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer;
     writer.Reset(buf);
     rapidjson::Value rootNode;
