@@ -1,6 +1,8 @@
 #ifndef SERIALIZE_UTIL_H
 #define SERIALIZE_UTIL_H
 
+#include "JsonSeriaLizable.h"
+
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
@@ -31,7 +33,19 @@ void SerializeUtil::writeItem(std::string key, T value) {
     } else if constexpr (std::is_floating_point_v<T>) {
         writer->Double(value);
     } else if constexpr (std::is_same_v<T, std::string>) {
+        writer->String(value.c_str());
+    } else if constexpr (std::is_same_v<T, bool>) {
+        writer->Bool(value);
+    } else if constexpr (std::is_same_v<T, char>) {
         writer->String(value);
+    } else if constexpr (std::is_enum_v<T>) {
+        writer->Int(static_cast<int>(value));
+    } else if constexpr (std::is_pointer_v<std::decay_t<T>>) {
+        if (std::is_base_of_v<JsonSeriaLizable, std::remove_pointer_t<std::decay_t<T>>>) {
+            writer->StartObject();
+            value->toJson(this);
+            writer->EndObject();
+        }
     }
 }
 
