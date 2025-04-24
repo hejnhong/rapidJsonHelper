@@ -15,7 +15,7 @@ class JsonSeriaLizable;
 class SerializeUtil {
 public:
     template <typename T>
-    void writeItem(std::string key, T value);
+    void writeItem(const std::string key, const T &value);
 
     void init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer, rapidjson::Value &node);
 private:
@@ -26,7 +26,7 @@ private:
 };
 
 template <typename T>
-void SerializeUtil::writeItem(std::string key, T value) {
+void SerializeUtil::writeItem(const std::string &key, const T &value) {
     std::cout << key << ": " << value << std::endl;
     writer->Key(key.c_str());
     if constexpr (std::is_integral_v<T>) {
