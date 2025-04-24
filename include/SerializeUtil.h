@@ -15,11 +15,15 @@ class JsonSeriaLizable;
 class SerializeUtil {
 public:
     template <typename T>
-    void writeItem(const std::string key, const T &value);
+    void writeItem(const std::string &key, const T &value);
+
 
     void init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer, rapidjson::Value &node);
 private:
     void reset();
+
+    template <typename T>
+    void writeValue(const T &value);
 
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> *writer = nullptr;
     rapidjson::Value *curNode = nullptr;
@@ -27,8 +31,13 @@ private:
 
 template <typename T>
 void SerializeUtil::writeItem(const std::string &key, const T &value) {
-    std::cout << key << ": " << value << std::endl;
+    std::cout <<"writeItem, " << key << ": " << value << std::endl;
     writer->Key(key.c_str());
+    writeValue(value);
+}
+
+template <typename T>
+void SerializeUtil::writeValue(const T &value) {
     if constexpr (std::is_integral_v<T>) {
         writer->Int(value);
     } else if constexpr (std::is_floating_point_v<T>) {
@@ -48,11 +57,13 @@ void SerializeUtil::writeItem(const std::string &key, const T &value) {
     } else if constexpr (std::is_pointer_v<std::decay_t<T>>) {
         using RawType = std::remove_pointer_t<std::decay_t<T>>;
         if constexpr (std::is_base_of_v<JsonSeriaLizable, RawType>) {
-            writer->StartObject();
             if (value) {
+                writer->StartObject();
                 value->toJson(this);
+                writer->EndObject();
+            } else {
+                writer->Null();
             }
-            writer->EndObject();
         } else {
             std::cout << "Not a JsonSeriaLizable pointer." << std::endl;
         }
