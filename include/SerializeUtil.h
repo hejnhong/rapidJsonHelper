@@ -15,7 +15,10 @@ class JsonSeriaLizable;
 class SerializeUtil {
 public:
     template <typename T>
-    void writeItem(const std::string &key, const T &value);
+    void writeItem(const std::string &key, const T &item);
+
+    template <typename T>
+    void writeList(const std::string &key, const std::vector<T> &list);
 
 
     void init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer, rapidjson::Value &node);
@@ -28,13 +31,6 @@ private:
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> *writer = nullptr;
     rapidjson::Value *curNode = nullptr;
 };
-
-template <typename T>
-void SerializeUtil::writeItem(const std::string &key, const T &value) {
-    std::cout <<"writeItem, " << key << ": " << value << std::endl;
-    writer->Key(key.c_str());
-    writeValue(value);
-}
 
 template <typename T>
 void SerializeUtil::writeValue(const T &value) {
@@ -68,6 +64,23 @@ void SerializeUtil::writeValue(const T &value) {
             std::cout << "Not a JsonSeriaLizable pointer." << std::endl;
         }
     }
+}
+
+template <typename T>
+void SerializeUtil::writeItem(const std::string &key, const T &item) {
+    std::cout <<"writeItem, " << key << ": " << value << std::endl;
+    writer->Key(key.c_str());
+    writeValue(item);
+}
+
+template <typename T>
+void SerializeUtil::writeList(const std::string &key, const std::vector<T> &list) {
+    writer->Key(key.c_str());
+    writer->StartArray();
+    for (const auto &item : list) {
+        writeValue(item);
+    }
+    writer->EndArray();
 }
 
 #endif // SERIALIZE_UTIL_H
