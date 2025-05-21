@@ -46,7 +46,8 @@ void SerializeUtil::writeValue(const T &value) {
         writer->String(value);
     } else if constexpr (std::is_enum_v<T>) {
         writer->Int(static_cast<int>(value));
-    }else if constexpr (std::is_same_v<std::decay_t<T>, const char*>) {
+    }else if constexpr (std::is_same_v<std::decay_t<T>, const char*>
+                        || std::is_same_v<std::decay_t<T>, char*>) {
         if (value) {
             writer->String(value);
         }
