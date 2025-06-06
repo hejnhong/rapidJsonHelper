@@ -5,7 +5,7 @@ project(MySerializer)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(${CMAKE_SOURCE_DIR})
+# include_directories(${CMAKE_SOURCE_DIR})
 include_directories(third_party/rapidjson/include)
 
 add_library(data_serializer OBJECT src/SerializeUtil.cpp src/DataSerializer.cpp)

@@ -17,6 +17,14 @@ std::string DataSerializer::serialize(JsonSeriaLizable *obj) {
     return buf.GetString();
 }
 
-void DataSerializer::deserialize(JsonSeriaLizable *obj) {
+void DataSerializer::deserialize(const std::string &jsonStr, JsonSeriaLizable *obj) {
+    rapidjson::Document doc;
+    if (doc.Parse(jsonStr.c_str()).HasParseError()) {
+        std::cout << "json parse error" << std::endl;
+        return;
+    }
 
+    SerializeUtil serializeUtil;
+    serializeUtil.setCurNode(doc);
+    obj->fromJson(&serializeUtil);
 }

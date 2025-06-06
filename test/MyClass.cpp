@@ -6,11 +6,14 @@ MyClass::MyClass()
 }
 
 void MyClass::fromJson(SerializeUtil *serializeUtil) {
-    
+    serializeUtil->readItem("name", name);
+    serializeUtil->readItem("subClass", subClass);
+    std::cout << "name: " << name << std::endl;
 }
 
-void MyClass::toJson(SerializeUtil *serializeUtil) {
+void MyClass::toJson(SerializeUtil *serializeUtil) const {
     serializeUtil->writeItem("name", "zhangsan");
     serializeUtil->writeItem("subClass", &subClass);
+    serializeUtil->writeItem("subClass2", subClass);
     serializeUtil->writeList("list", list);
 }

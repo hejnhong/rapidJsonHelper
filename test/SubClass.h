@@ -11,7 +11,7 @@ public:
     SubClass();
 
     void fromJson(SerializeUtil *serializeUtil) override;
-    void toJson(SerializeUtil *serializeUtil) override;
+    void toJson(SerializeUtil *serializeUtil) const override;
 
 private:
     int id;

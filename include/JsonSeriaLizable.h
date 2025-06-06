@@ -5,7 +5,7 @@
 
 class JsonSeriaLizable {
 public:
-    void virtual toJson(SerializeUtil *serializeUtil) = 0;
+    void virtual toJson(SerializeUtil *serializeUtil) const = 0;
     void virtual fromJson(SerializeUtil *serializeUtil) = 0;
 
     ~JsonSeriaLizable() {}

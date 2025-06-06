@@ -8,3 +8,7 @@ void SerializeUtil::init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &_writ
     writer = &_writer;
     curNode = &node;                
 }
+
+void SerializeUtil::setCurNode(rapidjson::Value &node) {
+    curNode = &node;
+}

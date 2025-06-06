@@ -7,11 +7,13 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
+#include <string>
+
 class DataSerializer
 {
 public:
     std::string serialize(JsonSeriaLizable *obj);
-    void deserialize(JsonSeriaLizable *obj);
+    void deserialize(const std::string &jsonStr, JsonSeriaLizable *obj);
 
 private:
     rapidjson::Document doc;
