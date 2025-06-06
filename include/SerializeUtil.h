@@ -11,6 +11,7 @@ class JsonSeriaLizable;
 #include <iostream>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 class SerializeUtil {
 public:
@@ -69,7 +70,7 @@ void SerializeUtil::writeValue(const T &value) {
 
 template <typename T>
 void SerializeUtil::writeItem(const std::string &key, const T &item) {
-    std::cout <<"writeItem, " << key << ": " << value << std::endl;
+    //std::cout <<"writeItem, " << key << ": " << value << std::endl;
     writer->Key(key.c_str());
     writeValue(item);
 }

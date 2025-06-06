@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+
 class MyClass : public JsonSeriaLizable
 {
 public:

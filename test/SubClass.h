@@ -3,6 +3,8 @@
 
 #include "JsonSeriaLizable.h"
 
+#include <string>
+
 class SubClass : public JsonSeriaLizable
 {
 public:

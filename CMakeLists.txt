@@ -14,6 +14,7 @@ target_include_directories(data_serializer PUBLIC ${CMAKE_SOURCE_DIR}/include)
 add_executable(test 
     test/main.cpp
     test/MyClass.cpp
+    test/SubClass.cpp
 )
 
 target_link_libraries(test data_serializer)
