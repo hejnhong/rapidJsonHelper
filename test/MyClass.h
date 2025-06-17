@@ -19,7 +19,7 @@ private:
     int id;
     std::string name;
     SubClass subClass;
-    std::vector<std::string> list;
+    std::vector<std::string> testList;
 };
 
 #endif // MY_CLASS_H

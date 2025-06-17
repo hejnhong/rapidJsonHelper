@@ -24,6 +24,10 @@ public:
     template <typename T>
     void writeList(const std::string &key, const std::vector<T> &list);
 
+    template <typename T>
+    void readList(const std::string &key, std::vector<T> &list);
+
+
 
     void init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer, rapidjson::Value &node);
     void setCurNode(rapidjson::Value &node);
@@ -154,6 +158,18 @@ void SerializeUtil::readItem(const std::string &key, T &item) {
     std::cout <<"readItem: " << key << std::endl;
     if (curNode != nullptr && curNode->HasMember(key.c_str())) {
         readValue((*curNode)[key.c_str()], item);
+    }
+}
+
+template <typename T>
+void SerializeUtil::readList(const std::string &key, std::vector<T> &list) {
+    std::cout <<"readList: " << key << std::endl;
+    if (curNode != nullptr && curNode->HasMember(key.c_str()) && curNode->IsArray()) {
+        for (auto &item : (*curNode)[key.c_str()].GetArray()) {
+            T value;
+            readValue(item, value);
+            list.emplace_back(value);
+        }
     }
 }
 
