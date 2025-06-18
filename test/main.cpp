@@ -6,8 +6,10 @@
 int main() {
     MyClass myClass;
     DataSerializer dataSerializer;
+
+    // serialize
     std::string res = dataSerializer.serialize(&myClass);
-    std::cout << res << std::endl;
+    std::cout << "serialized data : " << res << std::endl;
 
     // deserialize
     MyClass myClass2;

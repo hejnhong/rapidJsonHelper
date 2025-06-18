@@ -87,7 +87,7 @@ void SerializeUtil::writeValue(const T &value) {
 
 template <typename T>
 void SerializeUtil::writeItem(const std::string &key, const T &item) {
-    std::cout <<"writeItem: " << key << std::endl;
+    // std::cout <<"writeItem: " << key << std::endl;
     writer->Key(key.c_str());
     writeValue(item);
 }
@@ -155,7 +155,7 @@ void SerializeUtil::readValue(rapidjson::Value &node, T &value) {
 
 template <typename T>
 void SerializeUtil::readItem(const std::string &key, T &item) {
-    std::cout <<"readItem: " << key << std::endl;
+    // std::cout <<"readItem: " << key << std::endl;
     if (curNode != nullptr && curNode->HasMember(key.c_str())) {
         readValue((*curNode)[key.c_str()], item);
     }
@@ -163,7 +163,7 @@ void SerializeUtil::readItem(const std::string &key, T &item) {
 
 template <typename T>
 void SerializeUtil::readList(const std::string &key, std::vector<T> &list) {
-    std::cout <<"readList: " << key << std::endl;
+    // std::cout <<"readList: " << key << std::endl;
     if (curNode != nullptr && curNode->HasMember(key.c_str()) && curNode->IsArray()) {
         for (auto &item : (*curNode)[key.c_str()].GetArray()) {
             T value;
