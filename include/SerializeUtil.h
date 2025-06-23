@@ -165,9 +165,9 @@ template <typename T>
 void SerializeUtil::readList(const std::string &key, std::vector<T> &list) {
     // std::cout <<"readList: " << key << std::endl;
     if (curNode != nullptr && curNode->HasMember(key.c_str()) && curNode->IsArray()) {
-        for (auto &item : (*curNode)[key.c_str()].GetArray()) {
+        for (auto &node : (*curNode)[key.c_str()].GetArray()) {
             T value;
-            readValue(item, value);
+            readValue(node, value);
             list.emplace_back(value);
         }
     }

@@ -23,8 +23,10 @@
 ## 3. 接口说明
 SerializeUtil 类里的接口分为读和写两部分：
 
-writeItem：写单个数据项到json中，key 是在 json 中的 key
+writeItem：写单个数据项到json中，参数 key 的值将作为 json 中该项数据的 key
+
 readItem：读单个数据项，把 key 对应的数据项读到 item 中
 
 writeList：写 vector 数据
+
 readList：读数据到 vector 中
