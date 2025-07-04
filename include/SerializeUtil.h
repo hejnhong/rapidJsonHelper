@@ -12,6 +12,7 @@ class JsonSeriaLizable;
 #include <string>
 #include <type_traits>
 #include <vector>
+#include <unordered_map>
 
 class SerializeUtil {
 public:
@@ -19,15 +20,25 @@ public:
     void writeItem(const std::string &key, const T &item);
 
     template <typename T>
-    void readItem(const std::string &key, T &item);
+    void writeList(const std::string &key, const std::vector<T> &list);
 
     template <typename T>
-    void writeList(const std::string &key, const std::vector<T> &list);
+    void writeList(const std::string &key, const std::vector<std::vector<T>> &list);
+
+    template <typename T>
+    void writeMap(const std::string &key, const std::unordered_map<std::string, T> &map);
+
+    template <typename T>
+    void readItem(const std::string &key, T &item);
 
     template <typename T>
     void readList(const std::string &key, std::vector<T> &list);
 
+    template <typename T>
+    void readList(const std::string &key, std::vector<std::vector<T>> &list);
 
+    template <typename T>
+    void readMap(const std::string &key, std::unordered_map<std::string, T> &map);
 
     void init(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer, rapidjson::Value &node);
     void setCurNode(rapidjson::Value &node);
@@ -103,6 +114,30 @@ void SerializeUtil::writeList(const std::string &key, const std::vector<T> &list
 }
 
 template <typename T>
+void SerializeUtil::writeList(const std::string &key, const std::vector<std::vector<T>> &list) {
+    writer->Key(key.c_str());
+    writer->StartArray();
+    for (const auto &subList : list) {
+        writer->StartArray();
+        for (const auto &item : subList) {
+            writeValue(item);
+        }
+        writer->EndArray();
+    }
+    writer->EndArray();
+}
+
+template <typename T>
+void SerializeUtil::writeMap(const std::string &key, const std::unordered_map<std::string, T> &map) {
+    writer->Key(key.c_str());
+    writer->StartObject();
+    for (const auto &[key, value] : map) {
+        writeItem(key, value);
+    }
+    writer->EndObject();
+}
+
+template <typename T>
 void SerializeUtil::readValue(rapidjson::Value &node, T &value) {
     if constexpr (std::is_integral_v<T>) {
         value = node.GetInt();
@@ -156,20 +191,62 @@ void SerializeUtil::readValue(rapidjson::Value &node, T &value) {
 template <typename T>
 void SerializeUtil::readItem(const std::string &key, T &item) {
     // std::cout <<"readItem: " << key << std::endl;
-    if (curNode != nullptr && curNode->HasMember(key.c_str())) {
-        readValue((*curNode)[key.c_str()], item);
+    if (!curNode || !curNode->IsObject() || !curNode->HasMember(key.c_str())) {
+        return;
     }
+
+    readValue((*curNode)[key.c_str()], item);
 }
 
 template <typename T>
 void SerializeUtil::readList(const std::string &key, std::vector<T> &list) {
     // std::cout <<"readList: " << key << std::endl;
-    if (curNode != nullptr && curNode->HasMember(key.c_str()) && curNode->IsArray()) {
-        for (auto &node : (*curNode)[key.c_str()].GetArray()) {
-            T value;
-            readValue(node, value);
-            list.emplace_back(value);
+    if (!curNode || !curNode->IsObject() || !curNode->HasMember(key.c_str())) {
+        return;
+    }
+    if (!(*curNode)[key.c_str()].IsArray()) {
+        return;
+    }
+    for (auto &node : (*curNode)[key.c_str()].GetArray()) {
+        T value;
+        readValue(node, value);
+        list.emplace_back(std::move(value));
+    }
+}
+
+template <typename T>
+void SerializeUtil::readList(const std::string &key, std::vector<std::vector<T>> &list) {
+    // std::cout <<"readList: " << key << std::endl;
+    if (!curNode || !curNode->IsObject() || !curNode->HasMember(key.c_str())) {
+        return;
+    }
+    if (!(*curNode)[key.c_str()]->IsArray()) {
+        return;
+    }
+    for (auto &arrayNode : (*curNode)[key.c_str()].GetArray()) {
+        std::vector<T> subList;
+        if (arrayNode.IsArray()) {
+            for (auto &node : arrayNode.GetArray()) {
+                T value;
+                readValue(node, value);
+                subList.emplace_back(std::move(value));
+            }
         }
+        list.emplace_back(std::move(subList));
+    }
+}
+
+template <typename T>
+void SerializeUtil::readMap(const std::string &key, std::unordered_map<std::string, T> &map) {
+    if (curNode == nullptr || !curNode->IsObject() || !curNode->HasMember(key.c_str())) {
+        return;
+    }
+    auto &jsonMap = curNode->GetObject()[key.c_str()];
+    for (auto it = jsonMap.MemberBegin(); it != jsonMap.MemberEnd(); ++it) {
+        std::pair<std::string, T> pair;
+        pair.first = it->name.GetString();
+        readValue(it->value, pair.second);
+        map.emplace(std::move(pair))
     }
 }
 
